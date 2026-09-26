@@ -1,0 +1,46 @@
+[project]
+name = "medical-image-auc-maximization"
+version = "0.1.0"
+description = "LibAUC AUC-maximization losses vs. BCE baselines on MedMNIST classification tasks (CSE633 course project)"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "torch",
+    "torchvision",
+    "numpy",
+    "scikit-learn",
+    "matplotlib",
+    "pillow",
+    "tqdm",
+    "medmnist",
+]
+
+[project.optional-dependencies]
+# BreastDataset, SynapseMNIST and VesselDataset notebooks
+binary = [
+    "libauc==1.2.0",
+    "monai",
+    "optuna",
+]
+# chestMNIST notebook (needs MultiLabelAUCMLoss, which libauc 1.2.0 does not have)
+chest = [
+    "libauc>=2.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "jupyterlab",
+    "ipykernel",
+]
+
+[tool.uv]
+# the two libauc versions cannot share one environment
+conflicts = [
+    [
+        { extra = "binary" },
+        { extra = "chest" },
+    ],
+]
+
+# the code is a set of notebooks plus two helper modules, not an installable package
+package = false
